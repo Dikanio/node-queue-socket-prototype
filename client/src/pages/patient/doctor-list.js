@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const DoctorList = ({ socket }) => {
-  const [doctors, setDoctors] = useState([]);
+  const [doctors, setDoctors] = useState([{ username: 'Adit', patient: { queue_number: 1 } }, { username: 'Adit', patient: { queue_number: 1 } }]);
 
   const navigate = useNavigate();
 
@@ -15,25 +15,35 @@ const DoctorList = ({ socket }) => {
       setDoctors(data.doctorList)
     });
 
-    return () => socket.off('doctor_update');
+    return () => socket.off('doctor_update'); 
   }, [socket]);
 
   return (
     <div className={styles.doctorList}>
-
-      <div>
-        <ul className={styles.usersList}>
+      <b>Available Doctors</b>
+      <hr style={{ border: '1px solid black', width: '100%'}}></hr>
+      <div style={{ fontSize: `20px` }}>
+        <ul style={{ listStyle: `none`, margin: `0`, padding: `0` }}>
           {doctors.map((doctor, index) => (
             <li
               style={{
                 fontWeight: `normal`,
+                backgroundColor: `white`,
+                padding: '3px 10px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                border: `1px solid black`,
+                marginTop: '4px',
+                borderRadius: '5px',
               }}
               key={index}
             >
-              {doctor.username} - {doctor.patient?.queue_number}
-            </li>
+              <span>{doctor.username}</span>
+              <span>{doctor.patient?.queue_number}</span>
+            </li> 
           ))}
-        </ul>
+
+          </ul>
       </div>
     </div>
   );

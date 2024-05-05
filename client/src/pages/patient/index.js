@@ -3,11 +3,11 @@
 import styles from './styles.module.css';
 import { useState, useEffect } from 'react';
 import DoctorList from './doctor-list';
+import Countdown from 'react-countdown';
 
 const Patient = ({ user, setUser, socket }) => {
 
-  const [time, setTime] = useState([]);
-
+  const [time, setTime] = useState(0);
   // Runs whenever a socket event is recieved from the server
   useEffect(() => {
     socket.on('queue_update', (data) => {   
@@ -15,6 +15,8 @@ const Patient = ({ user, setUser, socket }) => {
       userList.forEach(item => {
         if (user.username === item.username) {
           setUser(item)
+          console.log("Test", item)
+          setTime(10)
         }
       });      
     });
@@ -24,13 +26,42 @@ const Patient = ({ user, setUser, socket }) => {
   }, [socket]);
 
   return (
-    <div className={styles.chatContainer}>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>
+
+
       {/* Add this */}
-      <DoctorList socket={socket}></DoctorList>
-      <div>
-        <h1>{user.username} - {user.queue_number} - {user.estimated_time}</h1>
+      {/* <DoctorList socket={socket}></DoctorList> */}
+
+      <div style={{ display:'flex', width: '500px'}}>
+        <div className={styles.doctorWrapper}>
+          <DoctorList socket={socket} user={user} setUser={setUser}></DoctorList>
+        </div>
+
+        <div className={styles.patientWrapper}>
+          <div style={{ display: 'flex'}}>
+            {/* que number */}
+            <div style={{ padding: '10px', border: '1px solid black', background: 'rgb(0, 24, 111)', width: "100px", height: "100px", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: '5px'}}>
+              <h1 style={{ color: 'white'}}>{user.queue_number}</h1>
+            </div>
+
+            <div style={{ marginLeft: '20px'}}>
+              <h1>{user.username} nama</h1> 
+            </div>
+
+              {/* <div>
+                <h1>{user.username} - {user.queue_number} - {user.estimated_time}</h1>
+              </div> */}
+          </div>
+
+          <div style={{ marginTop: '20px', background: "rgb(0, 24, 111)", color: 'white', padding: '10px', border: '1px solid black', borderRadius: '5px'}}>
+            <b>Estimated Time</b>
+            <div style={{ fontSize: '30px', fontWeight: 'bold', padding: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
+              <Countdown date={Date.now() + 5000000} />
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </div>  
   );
 };
 
