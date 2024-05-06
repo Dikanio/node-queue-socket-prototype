@@ -13,6 +13,7 @@ const Doctor = ({ user, setUser, socket }) => {
       console.log("Doctor Update: ", data)
       data.doctorList.forEach(doctor => {
         if (doctor.username == user.username) {
+          console.log(doctor)
           setUser(doctor)
         }
       })
@@ -28,7 +29,7 @@ const Doctor = ({ user, setUser, socket }) => {
   return (
     <div className={styles.container} >
 			<div className={styles.formContainer}>
-        <h1>{user.patient !== null ? user?.patient?.username: "Empty"}</h1>
+        <h1>{user.patient !== null ? `${user?.patient?.username} - No. ${user?.patient?.queue_number}` : "Empty"}</h1>
 				<button onClick={nextQueue} className="btn btn-secondary" style={{ width: '100%' }}>Next</button>
 			</div>
 		</div>

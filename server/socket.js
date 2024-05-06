@@ -57,10 +57,10 @@ const setupSocket = (server) => {
         }
       })
       queue.forEach((item,index) => {
-        item.estimated_time = calculateWaitingTime(index+1)
+        item.estimated_time = Doctor.calculateWaitingTime(index+1)
       })
       io.sockets.emit('doctor_update', {
-        doctorList
+        doctorList: Doctor.getDoctorList()
       })
       io.sockets.emit('queue_update', {
         userList: queue
